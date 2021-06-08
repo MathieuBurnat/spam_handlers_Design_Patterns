@@ -1,6 +1,6 @@
 Exigences
 ====
-[A] - Gestionnaire SMTP
+[A] - Gestionnaire SMTP :heavy_check_mark:
 ----------
 Je veux pouvoir changer (facilement) de gestionnaire SMTP.
 
@@ -16,3 +16,8 @@ Ajouter le critère de blockage suivant :
 
 - Les pièces jointes en extension .rar.
 
+Info
+----------
+
+🛠️ In developpement 
+:heavy_check_mark: Done
