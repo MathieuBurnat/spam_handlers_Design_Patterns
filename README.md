@@ -14,5 +14,5 @@ Ajouter les stats suivantes :
 ----------
 Ajouter le critère de blockage suivant :
 
-*..viendra plus tard...*
+- Les pièces jointes en extension .rar.
 
