@@ -1,6 +1,6 @@
 Exigences
 ====
-[A] - Gestionnaire SMTP
+[A] - Gestionnaire SMTP 🛠️
 ----------
 Je veux pouvoir changer (facilement) de gestionnaire SMTP.
 
