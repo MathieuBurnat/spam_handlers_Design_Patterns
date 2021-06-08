@@ -4,7 +4,7 @@ Exigences
 ----------
 Je veux pouvoir changer (facilement) de gestionnaire SMTP.
 
-[B] - Statistiques
+[B] - Statistiques 🛠️
 ----------
 Ajouter les stats suivantes :
 - Volume (taille en byte) des mails rejetés & stockés
