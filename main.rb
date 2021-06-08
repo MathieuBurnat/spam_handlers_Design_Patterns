@@ -1,10 +1,8 @@
-port = (ARGV[0] || 3325).to_i
-
-require 'rumbster'
 require 'mail'
 
 require_relative 'src/spam_handlers/bad_words'
 require_relative 'src/spam_handlers/recipient_whitelist'
+require_relative 'src/listener'
 
 class TheServer
   def initialize
@@ -43,10 +41,6 @@ class TheServer
       file.puts "Spam ratio: #{@rejected_count * 100 / @received_count}%"
     end
   end
-  
 end
 
-rumbster = Rumbster.new(port)
-rumbster.add_observer(TheServer.new)
-rumbster.start
-rumbster.join
+listener = Listener.new(TheServer.new)
