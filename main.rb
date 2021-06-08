@@ -43,4 +43,6 @@ class TheServer
   end
 end
 
-listener = Listener.new(TheServer.new)
+port = (ARGV[0] || 3325).to_i
+
+listener = Listener.new(TheServer.new, port)

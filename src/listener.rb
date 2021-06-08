@@ -1,12 +1,9 @@
 require 'rumbster'
 
 class Listener
-
-    def initialize(serveur)
-        port = (ARGV[0] || 3325).to_i
-
+    def initialize(server, port)
         rumbster = Rumbster.new(port)
-        rumbster.add_observer(TheServer.new)
+        rumbster.add_observer(server)
         rumbster.start
         rumbster.join
     end
