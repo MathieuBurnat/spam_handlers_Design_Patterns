@@ -14,6 +14,7 @@ class TheServer
     
     @received_count = 0
     @rejected_count = 0
+    @fileSize = 0
   end
   
   def update(string_message)
@@ -21,10 +22,13 @@ class TheServer
 
     puts "Received mail: #{mail.from} #{mail.to}"
     @received_count += 1
-    
     if @bad_words_handler.should_block?(mail) || @recipient_whitelist_handler.should_block?(mail)
+      @fileSize = mail.size #Something went  wrong here
+      puts("Size #{@fileSize}")
+      
       puts "Rejected mail: #{mail.from} #{mail.to}"
       @rejected_count += 1
+
     else
       puts "Stored mail: #{mail.from} #{mail.to}"
 
@@ -38,11 +42,11 @@ class TheServer
     File.open(@stats_filename, "w") do |file|
       file.puts "Received count: #{@received_count}"
       file.puts "Rejected count: #{@rejected_count}"
+      file.puts "Rejected volume size: #{@fileSize}"
       file.puts "Spam ratio: #{@rejected_count * 100 / @received_count}%"
     end
   end
 end
 
 port = (ARGV[0] || 3325).to_i
-
 listener = Listener.new(TheServer.new, port)
