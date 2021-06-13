@@ -1,4 +1,4 @@
-require_relative 'src/spam_handlers/bad_words'
+require_relative '../spam_handlers/bad_words'
 
 class WordsHandler
     def initialize

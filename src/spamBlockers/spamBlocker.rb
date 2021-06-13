@@ -1,8 +1,7 @@
 
-require_relative '../spamBlockers/wordsHandler.rb'
-require_relative '../spamBlockers/attachmentHandler.rb'
-require_relative '../spamBlockers/recipientsHandler.rb'
-
+require_relative 'wordsHandler'  
+require_relative 'attachmentHandler'  
+require_relative 'recipientsHandler'  
 
 class SpamBlocker 
     def initialize

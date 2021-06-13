@@ -1,4 +1,4 @@
-require_relative 'src/spam_handlers/recipient_whitelist'
+require_relative '../spam_handlers/recipient_whitelist'
 
 class RecipientsHandler
     def initialize
