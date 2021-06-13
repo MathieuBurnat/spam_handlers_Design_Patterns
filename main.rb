@@ -2,6 +2,7 @@ require 'mail'
 
 require_relative 'src/spamBlockers/spamBlocker'
 require_relative 'src/listener'
+require_relative 'src/statisticWritter'
 
 class TheServer
   def initialize
@@ -42,12 +43,8 @@ class TheServer
 
     end
     
-    File.open(@stats_filename, "w") do |file|
-      file.puts "Received count: #{@received_count}"
-      file.puts "Rejected count: #{@rejected_count}"
-      file.puts "Rejected volume size: #{@fileSize}"
-      file.puts "Spam ratio: #{@rejected_count * 100 / @received_count}%"
-    end
+    sw = StatisticWritter.new(@stats_filename)
+    sw.makeStatistics(@received_count, @rejected_count, @fileSize)
 
   rescue 
     puts $!.message
