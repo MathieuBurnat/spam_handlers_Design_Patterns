@@ -10,9 +10,9 @@ require_relative 'src/statisticWritter'
 class TheServer
   def initialize
     @spamBlocker = SpamBlocker.new();
-    @spamBlocker.addBlocker(RecipientsHandler.new())
+    @spamBlocker.addBlocker(RecipientsHandler.new({'white_regexp' => "@(cpnv.ch|vd.ch)$"}))
     @spamBlocker.addBlocker(AttachmentHandler.new())
-    @spamBlocker.addBlocker(WordsHandler.new())
+    @spamBlocker.addBlocker(WordsHandler.new({'words_list_path' => "bad_words_list.txt"}))
 
     @stats_filename = "data/stats.txt"
     @store_location = "data"

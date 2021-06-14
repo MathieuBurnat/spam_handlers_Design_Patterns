@@ -1,11 +1,10 @@
-require_relative '../spam_handlers/bad_words'
-
 class WordsHandler
-    def initialize
-        @bad_words_handler = SpamHandlers::BadWords.new({'words_list_path' => "bad_words_list.txt"})
+    def initialize(config)
+        @bad_words = File.readlines(config['words_list_path'], chomp: true)
+        @bad_words_regexp = Regexp.new(@bad_words.join('|'))
     end
-
-    def shouldBlock(email) 
-        return @bad_words_handler.should_block?(mail);
+      
+    def should_block?(mail)
+    mail.body.match(@bad_words_regexp)
     end
 end

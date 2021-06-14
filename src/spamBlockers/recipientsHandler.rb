@@ -1,11 +1,9 @@
-require_relative '../spam_handlers/recipient_whitelist'
-
 class RecipientsHandler
-    def initialize
-        @recipient_whitelist_handler = SpamHandlers::RecipientWhitelist.new({'white_regexp' => "@(cpnv.ch|vd.ch)$"})
+    def initialize(config)
+        @white_regexp = Regexp.new(config['white_regexp'])
     end
-
-    def shouldBlock(email) 
-        return @recipient_whitelist_handler.should_block?(mail);
+      
+    def should_block?(mail)
+    mail.destinations.none? {|destination| @white_regexp.match(destination) }
     end
 end
