@@ -4,9 +4,9 @@ class SpamBlocker
         @blockers = [];
     end
 
-    def addBlocker(blocker){
+    def addBlocker(blocker)
         @blockers.push(blocker);
-    }
+    end
 
     def shouldBlock(email) 
         shouldBlock = false;

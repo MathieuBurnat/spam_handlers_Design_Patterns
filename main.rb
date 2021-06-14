@@ -1,12 +1,18 @@
 require 'mail'
 
 require_relative 'src/spamBlockers/spamBlocker'
+require_relative 'src/spamBlockers/attachmentHandler'
+require_relative 'src/spamBlockers/recipientsHandler'
+require_relative 'src/spamBlockers/wordsHandler'
 require_relative 'src/listener'
 require_relative 'src/statisticWritter'
 
 class TheServer
   def initialize
     @spamBlocker = SpamBlocker.new();
+    @spamBlocker.addBlocker(RecipientsHandler.new())
+    @spamBlocker.addBlocker(AttachmentHandler.new())
+    @spamBlocker.addBlocker(WordsHandler.new())
 
     @stats_filename = "data/stats.txt"
     @store_location = "data"
