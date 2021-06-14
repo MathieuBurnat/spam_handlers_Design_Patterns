@@ -26,7 +26,7 @@ class TheServer
     @mailObserver.addReceived(mail)
 
     if @spamBlocker.shouldBlock(mail)
-      @mailObserver.addRejected(mail, string_message.size)
+      @mailObserver.addRejected(mail, string_message.bytesize)
     else
       @mailObserver.addStored(mail)
       mail.to.each do |recipient|
