@@ -4,8 +4,9 @@ require_relative 'src/spamBlockers/spamBlocker'
 require_relative 'src/spamBlockers/attachmentHandler'
 require_relative 'src/spamBlockers/recipientsHandler'
 require_relative 'src/spamBlockers/wordsHandler'
+require_relative 'src/mailObserver'
+
 require_relative 'src/listener'
-require_relative 'src/statisticWritter'
 
 class TheServer
   def initialize
@@ -14,11 +15,11 @@ class TheServer
     @spamBlocker.addBlocker(AttachmentHandler.new())
     @spamBlocker.addBlocker(WordsHandler.new({'words_list_path' => "bad_words_list.txt"}))
 
+    @mailObserver = MailObserver.new();
+
     @stats_filename = "data/stats.txt"
     @store_location = "data"
     
-    @received_count = 0
-    @rejected_count = 0
     @fileSize = 0
   end
   
@@ -26,22 +27,17 @@ class TheServer
 
     mail = Mail.read_from_string(string_message)
 
-    puts "Received mail: #{mail.from} #{mail.to}"
-    @received_count += 1
-    
+    @mailObserver.addReceived(mail)
 
     if @spamBlocker.should_block?(mail)
-      #@fileSize = mail.size
-      
-      puts("Size #{@fileSize}")
-      
-      puts "Rejected mail: #{mail.from} #{mail.to}"
-      @rejected_count += 1
+
+      @mailObserver.addRejected(mail)
 
     else
-      puts "Stored mail: #{mail.from} #{mail.to}"
+      @mailObserver.addStored(mail)
 
       mail.to.each do |recipient|
+
         target_dir = File.join(@store_location, recipient)
         Dir.mkdir(target_dir) unless Dir.exist?(target_dir)
         File.write(File.join(target_dir, "#{Time.now.to_i}.eml"), mail.raw_source)
@@ -49,15 +45,17 @@ class TheServer
 
     end
     
-    sw = StatisticWritter.new(@stats_filename)
-    sw.makeStatistics(@received_count, @rejected_count, @fileSize)
+    File.open(@file, "w") do |line|
+      line.puts "Received count: #{received_count}"
+      line.puts "Rejected count: #{rejected_count}"
+      line.puts "Rejected volume size: #{fileSize}"
+      line.puts "Spam ratio: #{rejected_count * 100 / received_count}%"
+    end
 
   rescue 
     puts $!.message
     puts $!.backtrace
   end
-
-
 end
 
 port = (ARGV[0] || 3325).to_i
