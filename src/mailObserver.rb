@@ -15,7 +15,8 @@ class MailObserver
 
     def addRejected(mail, filesize)
         @filesize = filesize;
-        puts("Size #{fileSize}");
+        puts("Volume : #{fileSize}");
+
         puts "Rejected mail: #{mail.from} #{mail.to}"
         @rejected_count += 1
         createStatistics();
@@ -27,11 +28,11 @@ class MailObserver
     end
 
     def createStatistics
-        File.open(@file, "w") do |line|
-            line.puts "Received count: #{received_count}"
-            line.puts "Rejected count: #{rejected_count}"
-            line.puts "Rejected volume size: #{fileSize}"
-            line.puts "Spam ratio: #{rejected_count * 100 / received_count}%"
-          end
+        #File.open(@stats_filename, "w") do |line|
+        #    line.puts "Received count: #{@received_count}"
+        #    line.puts "Rejected count: #{@rejected_count}"
+        #    line.puts "Rejected volume size: #{@fileSize}"
+        #    line.puts "Spam ratio: #{@rejected_count * 100 / @received_count}%"
+        #end
     end
 end

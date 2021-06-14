@@ -9,12 +9,12 @@ class SpamBlocker
     end
 
     def shouldBlock(email) 
-        shouldBlock = false;
+        block = false;
 
         @blockers.each do |blocker|
-            shouldBlock |= blocker.shouldBlock(email);
-          end
+            block |= blocker.shouldBlock(email);
+        end
 
-        return shouldBlock;
+        return block;
     end
 end

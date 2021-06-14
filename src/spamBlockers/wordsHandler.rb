@@ -4,7 +4,7 @@ class WordsHandler
         @bad_words_regexp = Regexp.new(@bad_words.join('|'))
     end
       
-    def should_block?(mail)
+    def shouldBlock(mail)
     mail.body.match(@bad_words_regexp)
     end
 end

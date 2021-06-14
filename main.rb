@@ -18,7 +18,6 @@ class TheServer
     @spamBlocker.addBlocker(WordsHandler.new({'words_list_path' => "bad_words_list.txt"}))
 
     @mailObserver = MailObserver.new(@stats_filename);
-
     @store_location = "data"
   end
   
@@ -26,8 +25,8 @@ class TheServer
     mail = Mail.read_from_string(string_message)
     @mailObserver.addReceived(mail)
 
-    if @spamBlocker.should_block?(mail)
-      @mailObserver.addRejected(mail)
+    if @spamBlocker.shouldBlock(mail)
+      @mailObserver.addRejected(mail, string_message.size)
     else
       @mailObserver.addStored(mail)
       mail.to.each do |recipient|
