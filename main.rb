@@ -8,6 +8,8 @@ require_relative 'src/mailObserver'
 
 require_relative 'src/listener'
 
+@stats_filename = "data/stats.txt"
+
 class TheServer
   def initialize
     @spamBlocker = SpamBlocker.new();
@@ -15,41 +17,24 @@ class TheServer
     @spamBlocker.addBlocker(AttachmentHandler.new())
     @spamBlocker.addBlocker(WordsHandler.new({'words_list_path' => "bad_words_list.txt"}))
 
-    @mailObserver = MailObserver.new();
+    @mailObserver = MailObserver.new(@stats_filename);
 
-    @stats_filename = "data/stats.txt"
     @store_location = "data"
-    
-    @fileSize = 0
   end
   
   def update(string_message)
-
     mail = Mail.read_from_string(string_message)
-
     @mailObserver.addReceived(mail)
 
     if @spamBlocker.should_block?(mail)
-
       @mailObserver.addRejected(mail)
-
     else
       @mailObserver.addStored(mail)
-
       mail.to.each do |recipient|
-
         target_dir = File.join(@store_location, recipient)
         Dir.mkdir(target_dir) unless Dir.exist?(target_dir)
         File.write(File.join(target_dir, "#{Time.now.to_i}.eml"), mail.raw_source)
       end
-
-    end
-    
-    File.open(@file, "w") do |line|
-      line.puts "Received count: #{received_count}"
-      line.puts "Rejected count: #{rejected_count}"
-      line.puts "Rejected volume size: #{fileSize}"
-      line.puts "Spam ratio: #{rejected_count * 100 / received_count}%"
     end
 
   rescue 
