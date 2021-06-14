@@ -1,22 +1,20 @@
 
-require_relative 'wordsHandler'  
-require_relative 'attachmentHandler'  
-require_relative 'recipientsHandler'  
-
 class SpamBlocker 
     def initialize
-        @wordsHandler = WordsHandler.new();
-        @attachmentHandler = AttachmentHandler.new();
-        @recipientsHandler = RecipientsHandler.new();
+        @blockers = [];
     end
 
-    def shouldBlock(email) 
-        block = false;
+    def addBlocker(blocker){
+        @blockers.push(blocker);
+    }
 
-        block |= @wordsHandler.shouldBlock(email);
-        block |= @attachmentHandler.shouldBlock(email);
-        block |= @recipientsHandler.shouldBlock(email);
-        
-        return block;
+    def shouldBlock(email) 
+        shouldBlock = false;
+
+        @blockers.each do |blocker|
+            shouldBlock |= blocker.shouldBlock(email);
+          end
+
+        return shouldBlock;
     end
 end
