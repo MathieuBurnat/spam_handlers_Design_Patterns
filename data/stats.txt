@@ -1,3 +1,4 @@
-Received count: 2
-Rejected count: 1
-Spam ratio: 50%
+Received count: 5
+Rejected count: 0
+Rejected volume size: 0
+Spam ratio: 0%
